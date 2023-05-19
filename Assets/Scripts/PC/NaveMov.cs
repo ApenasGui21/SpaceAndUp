@@ -23,6 +23,7 @@ public class NaveMov : MonoBehaviour
     bool rodando2 = true;
     bool liberaTiro = false;
     bool jaComecou = true;
+    int posicao = 0;
     
     public static int velocidadeSuper = 1;
     public static bool rapidao = false;
@@ -46,6 +47,7 @@ public class NaveMov : MonoBehaviour
 
     void Start()
     {
+        posicao = 0;
         mainCamera = Camera.main; //salva info camera
         RBnave = gameObject.GetComponent<Rigidbody2D>(); //pega RB nave
 
@@ -91,7 +93,11 @@ public class NaveMov : MonoBehaviour
 
 
             if (poder == 0 && ScoreManager.dificuldade < 7 && ScoreManager.dificuldade > 0)  //Sem poder, segue mouse, normal
-                SegueMousePosição();
+            {
+                //SegueMousePosição();
+                mudaPosicao();
+                print("LIBERADO");
+            }
             else if (poder == 1) //Explosão
             {
                 print("Explosao");
@@ -139,6 +145,38 @@ public class NaveMov : MonoBehaviour
             {
                 transform.Translate (new Vector2 (0, 2 * Time.deltaTime));
             }
+        }
+    }
+
+
+    //Movimentação
+    private void mudaPosicao()
+    {
+        if(Input.GetKeyDown(KeyCode.A))
+            moveEsq();
+        if(Input.GetKeyDown(KeyCode.D))
+            moveDir();
+    }
+
+    public void moveEsq()
+    {
+        if (posicao > -2)
+        {
+            print("Esq");
+            Vector3 lugarAtual = new Vector3(this.transform.position.x-1, this.transform.position.y, 0);
+            transform.position = lugarAtual;
+            posicao -= 1;
+        }
+    }
+
+    public void moveDir()
+    {
+        if (posicao < +2)
+        {
+            print("Dir");
+            Vector3 lugarAtual = new Vector3(this.transform.position.x+1, this.transform.position.y, 0);
+            transform.position = lugarAtual;
+            posicao += 1;
         }
     }
 
